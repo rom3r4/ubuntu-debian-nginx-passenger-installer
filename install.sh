@@ -4,12 +4,18 @@ CURL=`which curl`
 APT_GET=`which apt-get`
 RVMSUDO=`which rvmsudo`
 RVM=`which rvm`
+SUDO=`which sudo`
 
 $APT_GET update
 
 if [ "x$CURL" = "x" ];then
   echo "intalling cURL ..."
   apt-get install curl
+fi
+
+if [ "x$SUDO" = "x" ];then
+  echo "intalling sudo ..."
+  apt-get install sudo
 fi
 
 echo "Installing RVM stable with ruby"
@@ -71,7 +77,7 @@ echo "...And now Passenger takes over."
 
 echo "The last step is to turn start nginx, as it does not do so automatically."
 
-sudo service nginx start 
+$SUDO service nginx start 
 
 echo ""
 echo ""
