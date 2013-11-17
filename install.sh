@@ -113,7 +113,8 @@ fi
 echo "Additional Dependencies:"
 echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following..."
 
-$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion 
+
 
 echo "adding Curl development headers with SSL support.."
 
@@ -153,7 +154,8 @@ echo "Here is where Passenger really shines. As we are looking to install Rails 
 # for Apache2:
 # $SUDO $APT_GET install libapache2-mod-passenger
 # for NGINX:
-$SUDO $APT_GET install nginx-mod-passenger
+
+$RVMSUDO $APT_GET nginx-full ruby-passenger
 
 # useless:
 
