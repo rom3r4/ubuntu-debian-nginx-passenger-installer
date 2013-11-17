@@ -190,18 +190,32 @@ echo "...And now Passenger takes over."
 
 echo "The last step is to turn start nginx, as it does not do so automatically..."
 
+echo ""
 
 NGINX_CONF="/etc/nginx/nginx.conf"
 
+
 if [ -f $NGIX_CONF ];then
+
+  if [ ! -f ${NGIX_CONF}.orig ];then
+    cp $NGINX_CONF ${NGINX_CONF}.orig
+  fi
   
   echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
-  cp -f $NGINX_CONF ${NGINX_CONF}.orig
-  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF > $NGINX_CONF
-  $SUDO sed -e "s/# passenger_ruby/passenger_ruby/g" $NGINX_CONF > $NGINX_CONF
+  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > $NGINX_CONF 
+else
+  echo "Nginx installed?"
+  echo "update your /etc/nginx/nginx.conf file"
 fi
 
 $SUDO service nginx start 
+
+if [ "x$IS_DEBIAN" = "xyes" ];then
+  $CURL -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install-nodejs.debian.sh | bash
+else
+  $CURL -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install-nodejs.ubuntu.sh | bash  
+fi
+
 
 echo ""
 echo ""
@@ -220,6 +234,6 @@ server {
 }
 "
 
-
 echo "to create your new rails project, type: rails new my_awesome_rails_app"
+
 
