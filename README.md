@@ -4,7 +4,10 @@ Debian/Ubuntu Passenger (Ruby production's Server) Installer Script
 
 ### Install
 
-    curl -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install.sh | bash  
+    # copy-and-paste all in one line
+    
+    curl -L https://raw.github.com/julianromerajuarez/ubuntu\
+    -debian-nginx-passenger-installer/master/install.sh | bash  
 
 ### 'License'
 
