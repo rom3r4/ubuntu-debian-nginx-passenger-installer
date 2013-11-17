@@ -13,7 +13,8 @@ UBUNTU=`echo $SYSTEM | grep -i "ubuntu"`
 IS_DEBIAN="no"
 IS_UBUNTU="no"
 
-
+echo $DEBIAN
+echo $UBUNTU
 
 if [ "x$DEBIAN" != "x" ];then
 
@@ -26,7 +27,7 @@ elif [ "x$UBUNTU" != "x" ];then
   
 else
   echo "debian or ubuntu box required..."
-  echo "your system: `${SYSTEM}`"
+  echo "your system: '`${SYSTEM}`'"
   exit 1
   
 fi
