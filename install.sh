@@ -111,6 +111,8 @@ echo "Here is where Passenger really shines. As we are looking to install Rails 
 
 $RVMSUDO passenger-install-nginx-module
 
+read
+
 echo "...And now Passenger takes over."
 
 echo "The last step is to turn start nginx, as it does not do so automatically."
@@ -125,7 +127,7 @@ echo "type: sudo nano /opt/nginx/conf/nginx.conf"
 echo ""
 echo "write the text below, and save. Thats it"
 
-echo <<EOT
+echo "<<EOT
 server { 
   listen 80; 
   server_name example.com; 
@@ -133,7 +135,7 @@ server {
   root /var/www/my_awesome_rails_app/public; 
 }
 EOT
-
+"
 
 echo "to create your new rails project, type: rails new my_awesome_rails_app"
 
