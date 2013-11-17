@@ -104,9 +104,9 @@ echo "Once everything is set up, it is time to install Rails..."
 
 gem install rails --no-ri --no-rdoc
 
-echo "Adding also suppor for Sinatra..."
+echo "Adding also support for Sinatra & Rack..."
 
-gem install sinatra --no-ri --no-rdoc
+gem install sinatra rack--no-ri --no-rdoc
 
 echo "Once Ruby on Rails is installed, go ahead and install passenger."
 
@@ -116,9 +116,7 @@ echo "Here is where Passenger really shines. As we are looking to install Rails 
 
 $RVMSUDO passenger-install-nginx-module
 
-read -p "select option" opt
-
-echo $opt
+`read -p "select option" opt; echo $opt` 
 
 echo "...And now Passenger takes over."
 
