@@ -47,7 +47,17 @@ if [ "x$CODENAME" = "x" ];then
 fi
 
 
-$APT_GET update
+$SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
+
+$SUDO $APT_GET install apt-transport-https
+
+echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger $CODENAME main" >> /etc/apt/sources.list.d/passenger.list
+
+$SUDO chown root: /etc/apt/sources.list.d/passenger.list
+
+$SUDO chmod 600 /etc/apt/sources.list.d/passenger.list
+
+$SUDO $APT_GET update
 
 INSTALLATION_DIR="/tmp/nginx_install"
 
@@ -139,17 +149,6 @@ gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal.."
 
-$SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
-
-$SUDO $APT_GET install apt-transport-https
-
-echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger $CODENAME \main" >> /etc/apt/sources.list.d/passenger.list
-
-$SUDO chown root: /etc/apt/sources.list.d/passenger.list
-
-$SUDO chmod 600 /etc/apt/sources.list.d/passenger.list
-
-$SUDO $APT_GET update
 
 # for Apache2:
 # $SUDO $APT_GET install libapache2-mod-passenger
