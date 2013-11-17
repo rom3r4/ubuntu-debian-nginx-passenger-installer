@@ -89,11 +89,10 @@ echo "Once you are using RVM, installing Ruby is easy."
 
 $RVM install 1.9.3
 
+$RVM reload
 
-bash --login
-
-echo "Ruby is now installed. However, since we accessed it through a program that has a variety of Ruby versions, we need to tell the system to use 1.9.3 by default."
-$RVM use 1.9.3 --default
+# echo "Ruby is now installed. However, since we accessed it through a program that has a variety of Ruby versions, we need to tell the system to use 1.9.3 by default."
+# $RVM use 1.9.3 --default
 
 echo "The next step makes sure that we have all the required components of Ruby on Rails. We can continue to use RVM to install gems; type this line into terminal."
 rvm rubygems current
@@ -112,7 +111,7 @@ gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal:"
 
-$RVMSUDO passenger-install-nginx-module | read -r
+$RVMSUDO passenger-install-nginx-module
 
 
 
@@ -130,7 +129,7 @@ echo "type: sudo nano /opt/nginx/conf/nginx.conf"
 echo ""
 echo "write the text below, and save. Thats it"
 
-echo "<<EOT
+cat << 'EOT'
 server { 
   listen 80; 
   server_name example.com; 
@@ -138,7 +137,7 @@ server {
   root /var/www/my_awesome_rails_app/public; 
 }
 EOT
-"
+
 
 echo "to create your new rails project, type: rails new my_awesome_rails_app"
 
