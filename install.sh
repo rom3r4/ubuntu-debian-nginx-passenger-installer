@@ -9,6 +9,10 @@ SUDO=`which sudo`
 DEBIAN=`uname -a | grep -i "debian"`
 UBUNTU=`uname -a | grep -i "ubuntu"`
 
+
+INSTALLATION_DIR="/tmp/nginx_install"
+DOWNLOAD_DIR="/tmp"
+
 IS_DEBIAN="no"
 IS_UBUNTU="no"
 
@@ -106,7 +110,7 @@ gem install rails --no-ri --no-rdoc
 
 echo "Adding also support for Sinatra & Rack..."
 
-gem install sinatra rack--no-ri --no-rdoc
+gem install sinatra rack --no-ri --no-rdoc
 
 echo "Once Ruby on Rails is installed, go ahead and install passenger."
 
@@ -114,9 +118,21 @@ gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal:"
 
-$RVMSUDO passenger-install-nginx-module
-
-`read -p "select option" opt; echo $opt` 
+$RVMSUDO passenger-install-nginx-module --auto --prefix=/usr \
+--nginx-source-dir=${INSTALLATION_DIR} \
+--extra-configure-flags="--conf-path=/etc/nginx/nginx.conf \
+--http-log-path=/var/log/nginx/access.log \
+--error-log-path=/var/log/nginx/error.log \
+--pid-path=/var/run/nginx.pid \
+--http-client-body-temp-path=/var/tmp/nginx/client \
+--http-proxy-temp-path=/var/tmp/nginx/proxy \
+--http-fastcgi-temp-path=/var/tmp/nginx/fastcgi \
+--with-md5-asm --with-md5=/usr/include --with-sha1-asm \
+--with-sha1=/usr/include \
+--with-http_fastcgi_module \
+--with-http_stub_status_module \
+--with-http_ssl_module \
+--add-module=${DOWNLOAD_DIR}/`ls headers-more-nginx-module-* | head -1`"
 
 echo "...And now Passenger takes over."
 
@@ -132,14 +148,14 @@ echo "type: sudo nano /opt/nginx/conf/nginx.conf"
 echo ""
 echo "write the text below, and save. Thats it"
 
-cat << 'EOT'
+echo "
 server { 
   listen 80; 
   server_name example.com; 
   passenger_enabled on; 
   root /var/www/my_awesome_rails_app/public; 
 }
-EOT
+"
 
 
 echo "to create your new rails project, type: rails new my_awesome_rails_app"
