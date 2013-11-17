@@ -55,6 +55,10 @@ echo "Once everything is set up, it is time to install Rails..."
 
 gem install rails
 
+echo "Adding also suppor for Sinatra..."
+
+gem install sinatra
+
 echo "Once Ruby on Rails is installed, go ahead and install passenger."
 
 gem install passenger 
