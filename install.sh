@@ -47,6 +47,12 @@ echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following:"
 
 $RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs
 
+echo "adding Curl development headers with SSL support, 
+
+# select
+# $APT_GET install libcurl4-openssl-dev
+# or: 
+$APT_GET install libcurl4-gnutls-dev
 
 echo "Once you are using RVM, installing Ruby is easy."
 $RVM install 1.9.3
