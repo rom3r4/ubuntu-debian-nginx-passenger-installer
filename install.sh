@@ -81,19 +81,32 @@ echo "Installing RVM stable with ruby"
 
 curl -L get.rvm.io | bash -s stable
 
-echo "Setting up progress bar when downloading RVM / Rubies..."
 
-echo progress-bar >> ~/.curlrc
+PROGRESSBAR=`grep "ruby-passenger" ~/.curlrc`
 
-echo "Setting up rvmsudo_secure_path.."
+if [ "x$PROGRESSBAR" = "x" ];then
+  echo "Setting up progress bar when downloading RVM / Rubies..."
+  echo progress-bar >> ~/.curlrc
+fi
 
-echo "export rvmsudo_secure_path=1" >> ~/.profile
+
+SECUREPATH=`grep "rvmsudo_secure_path=1" ~/.profile`
+
+if [ "x$SECUREPATH" = "x" ];then
+  echo "Setting up rvmsudo_secure_path.."
+  echo "export rvmsudo_secure_path=1" >> ~/.profile
+fi
 
 export rvmsudo_secure_path=1
 
-echo "Makeing --no-ri --no-rdoc the default for gem install (will save disk space)"
+NORI=`grep "gem: --no-ri" ~/.gemrc`
 
-echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
+if [ "x$NORI" = "x" ];then
+  echo "Making --no-ri --no-rdoc the default for gem install (will save disk space)"
+  echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
+fi
+
+
  
 echo "After it is done installing, load RVM."
 source ~/.rvm/scripts/rvm
@@ -118,9 +131,7 @@ $RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev 
 
 echo "adding Curl development headers with SSL support.."
 
-# select
-# $APT_GET install libcurl4-openssl-dev
-# or: 
+# select $APT_GET install libcurl4-openssl-de or: 
 $APT_GET install libcurl4-gnutls-dev
 
 # echo "Once you are using RVM, installing Ruby is easy."
@@ -140,7 +151,7 @@ echo "Once everything is set up, it is time to install Rails..."
 
 $RVM all do gem install rails --no-ri --no-rdoc
 
-echo "Adding also support for Sinatra & Rack..."
+echo "Adding support for Sinatra & Rack..."
 
 $RVM all do gem install sinatra rack --no-ri --no-rdoc
 
@@ -149,7 +160,6 @@ $RVM all do gem install sinatra rack --no-ri --no-rdoc
 # $RVM all do gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal.."
-
 
 # for Apache2:
 # $SUDO $APT_GET install libapache2-mod-passenger
