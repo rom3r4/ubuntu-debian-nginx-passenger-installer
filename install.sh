@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CURL=`which curl`
 APT_GET=`which apt-get`
@@ -10,12 +10,12 @@ DEBIAN=`uname -a | grep -i "debian"`
 UBUNTU=`uname -a | grep -i "ubuntu"`
 
 
-INSTALLATION_DIR="/tmp/nginx_install"
-DOWNLOAD_DIR="/tmp"
+# INSTALLATION_DIR="/tmp/nginx_install"
 
 IS_DEBIAN="no"
 IS_UBUNTU="no"
 
+CODENAME=""
 
 if [ "x$DEBIAN" != "x" ];then
 
@@ -33,9 +33,29 @@ else
   
 fi
 
+echo "Finding Debian/Ubuntu codename..."
+
+CODENAME=`cat /etc/*-release | grep "VERSION="`
+
+CODENAME=${CODENAME##*\(}
+CODENAME=${CODENAME%%\)*}
+
+if [ "x$CODENAME" = "x" ];then
+  echo "Your Debian/ Ubuntu Version-codename could not be found, thus Passenger apt-repository won't be valid... exiting"
+  echo "some example codenames: saucy, precise, lucid, wheezy, squeeze"
+  exit 1
+fi
+
 
 $APT_GET update
 
+INSTALLATION_DIR="/tmp/nginx_install"
+
+if [ ! -d $INSTALLATION_DIR ];then
+  echo "Creating installation directory..${INSTALLATION_DIR}"
+  mkdir $INSTALLATION_DIR
+fi
+    
 
 if [ "x$CURL" = "x" ];then
   echo "intalling cURL ..."
@@ -69,7 +89,8 @@ echo "After it is done installing, load RVM."
 source ~/.rvm/scripts/rvm
 
 
-echo "In order to work, RVM has some of its own dependancies that need to be installed."
+echo "In order to work, RVM has some of its own dependancies that need to be installed..."
+
 rvm requirements
 RESULT=$?
 
@@ -80,7 +101,7 @@ if [ $RESULT -ne 0 ];then
 fi
 
 echo "Additional Dependencies:"
-echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following:"
+echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following..."
 
 $RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 
@@ -101,7 +122,7 @@ $APT_GET install libcurl4-gnutls-dev
 
 # $RVM use 1.9.3 --default
 
-echo "The next step makes sure that we have all the required components of Ruby on Rails. We can continue to use RVM to install gems; type this line into terminal."
+echo "The next step makes sure that we have all the required components of Ruby on Rails. We can continue to use RVM to install gems; type this line into terminal..."
 rvm rubygems current
 
 echo "Once everything is set up, it is time to install Rails..."
@@ -112,31 +133,50 @@ echo "Adding also support for Sinatra & Rack..."
 
 gem install sinatra rack --no-ri --no-rdoc
 
-echo "Once Ruby on Rails is installed, go ahead and install passenger."
+echo "Once Ruby on Rails is installed, go ahead and install passenger..."
 
 gem install passenger --no-ri --no-rdoc
 
-echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal:"
+echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal.."
 
-$RVMSUDO passenger-install-nginx-module --auto --prefix=/usr \
---nginx-source-dir=${INSTALLATION_DIR} \
---extra-configure-flags="--conf-path=/etc/nginx/nginx.conf \
---http-log-path=/var/log/nginx/access.log \
---error-log-path=/var/log/nginx/error.log \
---pid-path=/var/run/nginx.pid \
---http-client-body-temp-path=/var/tmp/nginx/client \
---http-proxy-temp-path=/var/tmp/nginx/proxy \
---http-fastcgi-temp-path=/var/tmp/nginx/fastcgi \
---with-md5-asm --with-md5=/usr/include --with-sha1-asm \
---with-sha1=/usr/include \
---with-http_fastcgi_module \
---with-http_stub_status_module \
---with-http_ssl_module \
---add-module=${DOWNLOAD_DIR}/`ls headers-more-nginx-module-* | head -1`"
+$SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
+
+$SUDO $APT_GET install apt-transport-https
+
+echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger $CODENAME \main" >> /etc/apt/sources.list.d/passenger.list
+
+$SUDO chown root: /etc/apt/sources.list.d/passenger.list
+
+$SUDO chmod 600 /etc/apt/sources.list.d/passenger.list
+
+$SUDO $APT_GET update
+
+# for Apache2:
+# $SUDO $APT_GET install libapache2-mod-passenger
+# for NGINX:
+$SUDO $APT_GET install nginx-mod-passenger
+
+# useless:
+
+# $RVMSUDO passenger-install-nginx-module --auto --prefix=/usr \
+# --nginx-source-dir=${INSTALLATION_DIR} \
+# --extra-configure-flags="--conf-path=/etc/nginx/nginx.conf \
+# --http-log-path=/var/log/nginx/access.log \
+# --error-log-path=/var/log/nginx/error.log \
+# --pid-path=/var/run/nginx.pid \
+# --http-client-body-temp-path=/var/tmp/nginx/client \
+#  --http-proxy-temp-path=/var/tmp/nginx/proxy \
+# --http-fastcgi-temp-path=/var/tmp/nginx/fastcgi \
+# --with-md5-asm --with-md5=/usr/include --with-sha1-asm \
+# --with-sha1=/usr/include \
+# --with-http_fastcgi_module \
+# --with-http_stub_status_module \
+# --with-http_ssl_module \
+# --add-module=${INSTALLATION_DIR}/`ls headers-more-nginx-module-* | head -1`"
 
 echo "...And now Passenger takes over."
 
-echo "The last step is to turn start nginx, as it does not do so automatically."
+echo "The last step is to turn start nginx, as it does not do so automatically..."
 
 $SUDO service nginx start 
 
