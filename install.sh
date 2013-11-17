@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CURL=`which curl`
 APT_GET=`which apt-get`
@@ -6,7 +6,34 @@ RVMSUDO=`which rvmsudo`
 RVM=`which rvm`
 SUDO=`which sudo`
 
+SYSTEM=`uname -a`
+DEBIAN=`$SYSTEM | grep -i "debian"`
+UBUNTU=`$SYSTEM | grep -i "ubuntu"`
+
+IS_DEBIAN="no"
+IS_UBUNTU="no"
+
+
+
+if [ "x$DEBIAN" != "x" ];then
+
+  echo "Installing Passenger on a Debian box"
+  IS_DEBIAN="yes"
+  
+elif [ "x$UBUNTU" != "x" ];then
+  echo "Installing Passenger on a Ubuntu Box"
+  IS_UBUNTU="yes"
+  
+else
+  echo "debian or ubuntu box required..."
+  echo "your system: ${SYSTEM}"
+  exit 1
+  
+fi
+
+
 $APT_GET update
+
 
 if [ "x$CURL" = "x" ];then
   echo "intalling cURL ..."
@@ -43,9 +70,7 @@ fi
 echo "Additional Dependencies:"
 echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following:"
 
-# $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
-
-$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion nodejs
+$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 
 echo "adding Curl development headers with SSL support, 
 
@@ -93,14 +118,14 @@ echo "type: sudo nano /opt/nginx/conf/nginx.conf"
 echo ""
 echo "write the text below, and save. Thats it"
 
-echo <<<EOT
+echo "<<<EOT
 server { 
   listen 80; 
   server_name example.com; 
   passenger_enabled on; 
   root /var/www/my_awesome_rails_app/public; 
-}
+}"
 EOT
 
-echo "to create your new rails project, type:  'rails new my_awesome_rails_app'"
+echo "to create your new rails project, type: rails new my_awesome_rails_app"
 
