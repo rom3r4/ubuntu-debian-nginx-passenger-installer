@@ -12,7 +12,13 @@ if [ "x$CURL" = "x" ];then
   apt-get install curl
 fi
 
+echo "Installing RVM stable with ruby"
+
 curl -L get.rvm.io | bash -s stable
+
+echo "Setting up progress bar when downloading RVM / Rubies..."
+
+echo progress-bar >> ~/.curlrc
 
 echo "After it is done installing, load RVM."
 source ~/.rvm/scripts/rvm
