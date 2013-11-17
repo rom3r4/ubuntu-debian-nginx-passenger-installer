@@ -51,6 +51,14 @@ echo "Setting up progress bar when downloading RVM / Rubies..."
 
 echo progress-bar >> ~/.curlrc
 
+echo "Setting up rvmsudo_secure_path.."
+
+echo "export rvmsudo_secure_path=1" >> ~/.profile
+
+echo "Makeing --no-ri --no-rdoc the default for gem install (will save disk space)"
+
+echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
+ 
 echo "After it is done installing, load RVM."
 source ~/.rvm/scripts/rvm
 
@@ -89,15 +97,15 @@ rvm rubygems current
 
 echo "Once everything is set up, it is time to install Rails..."
 
-gem install rails
+gem install rails --no-ri --no-rdoc
 
 echo "Adding also suppor for Sinatra..."
 
-gem install sinatra
+gem install sinatra --no-ri --no-rdoc
 
 echo "Once Ruby on Rails is installed, go ahead and install passenger."
 
-gem install passenger 
+gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal:"
 
@@ -117,14 +125,15 @@ echo "type: sudo nano /opt/nginx/conf/nginx.conf"
 echo ""
 echo "write the text below, and save. Thats it"
 
-echo "<<<EOT
+echo <<EOT
 server { 
   listen 80; 
   server_name example.com; 
   passenger_enabled on; 
   root /var/www/my_awesome_rails_app/public; 
-}"
+}
 EOT
+
 
 echo "to create your new rails project, type: rails new my_awesome_rails_app"
 
