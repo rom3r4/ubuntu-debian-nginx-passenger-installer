@@ -12,8 +12,6 @@ UBUNTU=`uname -a | grep -i "ubuntu"`
 IS_DEBIAN="no"
 IS_UBUNTU="no"
 
-echo $DEBIAN
-echo $UBUNTU
 
 if [ "x$DEBIAN" != "x" ];then
 
@@ -31,7 +29,7 @@ else
   
 fi
 
-exit 1
+
 $APT_GET update
 
 
