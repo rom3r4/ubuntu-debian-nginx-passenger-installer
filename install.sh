@@ -80,5 +80,5 @@ server {
 }
 EOT
 
-echo "to create your new rails project type:  'rails new my_awesome_rails_app'"
+echo "to create your new rails project, type:  'rails new my_awesome_rails_app'"
 
