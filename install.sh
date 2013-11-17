@@ -151,9 +151,10 @@ echo "Once everything is set up, it is time to install Rails..."
 
 $RVM all do gem install rails --no-ri --no-rdoc
 
-echo "Adding support for Sinatra & Rack..."
+echo "Adding support for Sinatra, Rack and Bundler..."
 
-$RVM all do gem install sinatra rack --no-ri --no-rdoc
+$RVM all do gem install sinatra rack bundler --no-ri --no-rdoc
+
 
 # echo "Once Ruby on Rails is installed, go ahead and install passenger..."
 
