@@ -9,6 +9,10 @@ Debian/Ubuntu Passenger (Ruby production's Server) Installer Script
     curl -L https://raw.github.com/julianromerajuarez/ubuntu\
     -debian-nginx-passenger-installer/master/install.sh | bash  
 
+### Todo
+
+- Test on Ubuntu: version parsing may need some tweaking
+
 ### 'License'
 
 This is free and unemcumbered software released into the public domain. For more information, see the accompanying UNLICENSE file.

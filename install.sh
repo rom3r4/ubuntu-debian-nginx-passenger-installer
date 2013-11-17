@@ -113,7 +113,7 @@ fi
 echo "Additional Dependencies:"
 echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following..."
 
-$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion 
+$RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion libpq-dev
 
 
 echo "adding Curl development headers with SSL support.."
@@ -138,15 +138,15 @@ rvm rubygems current
 
 echo "Once everything is set up, it is time to install Rails..."
 
-gem install rails --no-ri --no-rdoc
+$RVM all do gem install rails --no-ri --no-rdoc
 
 echo "Adding also support for Sinatra & Rack..."
 
-gem install sinatra rack --no-ri --no-rdoc
+$RVM all do gem install sinatra rack --no-ri --no-rdoc
 
-echo "Once Ruby on Rails is installed, go ahead and install passenger..."
+# echo "Once Ruby on Rails is installed, go ahead and install passenger..."
 
-gem install passenger --no-ri --no-rdoc
+# $RVM all do gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal.."
 
@@ -155,7 +155,7 @@ echo "Here is where Passenger really shines. As we are looking to install Rails 
 # $SUDO $APT_GET install libapache2-mod-passenger
 # for NGINX:
 
-$RVMSUDO $APT_GET install nginx-full ruby-passenger
+$RVMSUDO $APT_GET install nginx-full passenger
 
 # useless:
 
