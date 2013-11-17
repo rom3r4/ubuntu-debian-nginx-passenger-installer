@@ -55,6 +55,8 @@ echo "Setting up rvmsudo_secure_path.."
 
 echo "export rvmsudo_secure_path=1" >> ~/.profile
 
+export rvmsudo_secure_path=1
+
 echo "Makeing --no-ri --no-rdoc the default for gem install (will save disk space)"
 
 echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
@@ -85,13 +87,14 @@ echo "adding Curl development headers with SSL support.."
 # or: 
 $APT_GET install libcurl4-gnutls-dev
 
-echo "Once you are using RVM, installing Ruby is easy."
+# echo "Once you are using RVM, installing Ruby is easy."
 
-$RVM install 1.9.3
+# $RVM install 1.9.3
 
-$RVM reload
+# $RVM reload
 
 # echo "Ruby is now installed. However, since we accessed it through a program that has a variety of Ruby versions, we need to tell the system to use 1.9.3 by default."
+
 # $RVM use 1.9.3 --default
 
 echo "The next step makes sure that we have all the required components of Ruby on Rails. We can continue to use RVM to install gems; type this line into terminal."
@@ -113,7 +116,9 @@ echo "Here is where Passenger really shines. As we are looking to install Rails 
 
 $RVMSUDO passenger-install-nginx-module
 
+read -p "select option" opt
 
+echo $opt
 
 echo "...And now Passenger takes over."
 
