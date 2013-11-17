@@ -89,6 +89,9 @@ echo "Once you are using RVM, installing Ruby is easy."
 
 $RVM install 1.9.3
 
+
+bash --login
+
 echo "Ruby is now installed. However, since we accessed it through a program that has a variety of Ruby versions, we need to tell the system to use 1.9.3 by default."
 $RVM use 1.9.3 --default
 
@@ -109,9 +112,9 @@ gem install passenger --no-ri --no-rdoc
 
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal:"
 
-$RVMSUDO passenger-install-nginx-module
+$RVMSUDO passenger-install-nginx-module | read -r
 
-read
+
 
 echo "...And now Passenger takes over."
 
