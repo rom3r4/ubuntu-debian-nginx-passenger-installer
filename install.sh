@@ -189,6 +189,17 @@ echo "...And now Passenger takes over."
 
 echo "The last step is to turn start nginx, as it does not do so automatically..."
 
+
+NGINX_CONF="/etc/nginx/nginx.conf"
+
+if [ -f $NGIX_CONF ];then
+  
+  echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
+  cp -f $NGINX_CONF ${NGINX_CONF}.orig
+  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF > $NGINX_CONF
+  $SUDO sed -e "s/# passenger_ruby/passenger_ruby/g" $NGINX_CONF > $NGINX_CONF
+fi
+
 $SUDO service nginx start 
 
 echo ""
