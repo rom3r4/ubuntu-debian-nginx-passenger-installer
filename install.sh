@@ -7,8 +7,8 @@ RVM=`which rvm`
 SUDO=`which sudo`
 
 SYSTEM="uname -a"
-DEBIAN=`${SYSTEM} | grep -i "debian"`
-UBUNTU=`${SYSTEM} | grep -i "ubuntu"`
+DEBIAN=`echo $SYSTEM | grep -i "debian"`
+UBUNTU=`echo $SYSTEM | grep -i "ubuntu"`
 
 IS_DEBIAN="no"
 IS_UBUNTU="no"
@@ -31,7 +31,7 @@ else
   
 fi
 
-
+exit 1
 $APT_GET update
 
 
