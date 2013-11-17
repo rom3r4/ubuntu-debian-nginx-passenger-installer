@@ -6,9 +6,9 @@ RVMSUDO=`which rvmsudo`
 RVM=`which rvm`
 SUDO=`which sudo`
 
-SYSTEM=`uname -a`
-DEBIAN=`$SYSTEM | grep -i "debian"`
-UBUNTU=`$SYSTEM | grep -i "ubuntu"`
+SYSTEM="uname -a"
+DEBIAN=`${SYSTEM} | grep -i "debian"`
+UBUNTU=`${SYSTEM} | grep -i "ubuntu"`
 
 IS_DEBIAN="no"
 IS_UBUNTU="no"
@@ -26,7 +26,7 @@ elif [ "x$UBUNTU" != "x" ];then
   
 else
   echo "debian or ubuntu box required..."
-  echo "your system: ${SYSTEM}"
+  echo "your system: `${SYSTEM}`"
   exit 1
   
 fi
