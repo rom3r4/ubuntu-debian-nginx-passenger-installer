@@ -30,16 +30,16 @@ fi
 
 
 $GIT clone https://github.com/joyent/node.git $DOWNLOAD_DIR
-cd_tmp()
+cd_tmp();
 $GIT checkout v0.6.8
 
 
 $DOWNLOAD_DIR/configure --openssl-libpath=/usr/lib/ssl
 
 
-cd_tmp()
+cd_tmp();
 sudo $MAKE 
-cd_tmp()
+cd_tmp();
 sudo $MAKE install
 RESULT=$?
 
@@ -51,6 +51,6 @@ fi
 
 echo ""
 echo "Installing npm ..."
-cd_tmp()
+cd_tmp();
 curl https://npmjs.org/install.sh | sudo sh
 
