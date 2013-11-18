@@ -229,7 +229,9 @@ if [ -f $NGINX_CONF ];then
   echo ""
   echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
   $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > "${NGINX_CONF}.modifyied"
+  cat "${NGINX_CONF}.modifyied" > $NGINX_CONF
 else
+
   echo ""
   echo "Nginx installed?"
   echo "update your $NGINX_CONF file"
