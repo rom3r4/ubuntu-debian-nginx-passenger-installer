@@ -18,21 +18,25 @@ IS_UBUNTU="no"
 CODENAME=""
 
 if [ "x$DEBIAN" != "x" ];then
-
+  
+  echo ""
   echo "Installing Passenger on a Debian box"
   IS_DEBIAN="yes"
   
 elif [ "x$UBUNTU" != "x" ];then
+  echo ""
   echo "Installing Passenger on a Ubuntu Box"
   IS_UBUNTU="yes"
   
 else
+  echo ""
   echo "debian or ubuntu box required..."
   echo "your system: '`uname -a`'"
   exit 1
   
 fi
 
+echo ""
 echo "Finding Debian/Ubuntu codename..."
 
 CODENAME=`cat /etc/*-release | grep "VERSION="`
@@ -41,6 +45,7 @@ CODENAME=${CODENAME##*\(}
 CODENAME=${CODENAME%%\)*}
 
 if [ "x$CODENAME" = "x" ];then
+  echo ""
   echo "Your Debian/ Ubuntu Version-codename could not be found, thus Passenger apt-repository won't be valid... exiting"
   echo "some example codenames: saucy, precise, lucid, wheezy, squeeze"
   exit 1
@@ -51,6 +56,7 @@ $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
 
 $SUDO $APT_GET install apt-transport-https
 
+echo ""
 echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger $CODENAME main" > /etc/apt/sources.list.d/passenger.list
 
 $SUDO chown root: /etc/apt/sources.list.d/passenger.list
@@ -62,21 +68,25 @@ $SUDO $APT_GET update
 INSTALLATION_DIR="/tmp/nginx_install"
 
 if [ ! -d $INSTALLATION_DIR ];then
+  echo ""
   echo "Creating installation directory..${INSTALLATION_DIR}"
   mkdir $INSTALLATION_DIR
 fi
     
 
 if [ "x$CURL" = "x" ];then
+  echo ""
   echo "intalling cURL ..."
   apt-get install curl
 fi
 
 if [ "x$SUDO" = "x" ];then
+  echo ""
   echo "intalling sudo ..."
   apt-get install sudo
 fi
 
+echo ""
 echo "Installing RVM stable with ruby"
 
 curl -L get.rvm.io | bash -s stable
@@ -85,6 +95,7 @@ curl -L get.rvm.io | bash -s stable
 PROGRESSBAR=`grep "ruby-passenger" ~/.curlrc`
 
 if [ "x$PROGRESSBAR" = "x" ];then
+  echo ""
   echo "Setting up progress bar when downloading RVM / Rubies..."
   echo progress-bar >> ~/.curlrc
 fi
@@ -93,6 +104,7 @@ fi
 SECUREPATH=`grep "rvmsudo_secure_path=1" ~/.profile`
 
 if [ "x$SECUREPATH" = "x" ];then
+  echo ""
   echo "Setting up rvmsudo_secure_path.."
   echo "export rvmsudo_secure_path=1" >> ~/.profile
 fi
@@ -102,33 +114,39 @@ export rvmsudo_secure_path=1
 NORI=`grep "gem: --no-ri" ~/.gemrc`
 
 if [ "x$NORI" = "x" ];then
+  echo ""
   echo "Making --no-ri --no-rdoc the default for gem install (will save disk space)"
   echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
 fi
 
 
  
+echo ""
 echo "After it is done installing, load RVM."
 source ~/.rvm/scripts/rvm
 
 
+echo ""
 echo "In order to work, RVM has some of its own dependancies that need to be installed..."
 
 rvm requirements
 RESULT=$?
 
 if [ $RESULT -ne 0 ];then
+  echo ""
   echo "error, can't continue, rvm is not detected. try rebooting your system"
   echo "close your tasks and type 'reboot' as toot"
   exit 1
 fi
 
+echo ""
 echo "Additional Dependencies:"
 echo "For Ruby / Ruby HEAD (MRI, Rubinius, & REE), install the following..."
 
 $RVMSUDO $APT_GET install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion libpq-dev
 
 
+echo ""
 echo "adding Curl development headers with SSL support.."
 
 # select $APT_GET install libcurl4-openssl-de or: 
@@ -144,13 +162,16 @@ $APT_GET install libcurl4-gnutls-dev
 
 # $RVM use 1.9.3 --default
 
+echo ""
 echo "The next step makes sure that we have all the required components of Ruby on Rails. We can continue to use RVM to install gems; type this line into terminal..."
 rvm rubygems current
 
+echo ""
 echo "Once everything is set up, it is time to install Rails..."
 
 $RVM all do gem install rails --no-ri --no-rdoc
 
+echo ""
 echo "Adding support for Sinatra, Rack and Bundler..."
 
 $RVM all do gem install sinatra rack bundler rake --no-ri --no-rdoc
@@ -160,7 +181,9 @@ $RVM all do gem install sinatra rack bundler rake --no-ri --no-rdoc
 
 # $RVM all do gem install passenger --no-ri --no-rdoc
 
+echo ""
 echo "Here is where Passenger really shines. As we are looking to install Rails on an nginx server, we only need to enter one more line into terminal.."
+
 
 # for Apache2:
 # $SUDO $APT_GET install libapache2-mod-passenger
@@ -186,8 +209,10 @@ $RVMSUDO $APT_GET install nginx-full passenger
 # --with-http_ssl_module \
 # --add-module=${INSTALLATION_DIR}/`ls headers-more-nginx-module-* | head -1`"
 
+echo ""
 echo "...And now Passenger takes over."
 
+echo ""
 echo "The last step is to turn start nginx, as it does not do so automatically..."
 
 echo ""
@@ -201,13 +226,16 @@ if [ -f $NGIX_CONF ];then
     cp $NGINX_CONF ${NGINX_CONF}.orig
   fi
   
+  echo ""
   echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
   $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > $NGINX_CONF 
 else
+  echo ""
   echo "Nginx installed?"
   echo "update your /etc/nginx/nginx.conf file"
 fi
 
+echo ""
 echo "Trying to configure Passenger ..."
 
 cd `passenger-config --root` &&  $RVMSUDO rake nginx
