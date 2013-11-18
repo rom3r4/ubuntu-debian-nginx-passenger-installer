@@ -7,6 +7,8 @@ $GIT=`which git`
 
 $DOWNLOAD_DIR=/tmp/nodejs
 
+alias cd_tmp="cd $DOWNLOAD_DIR"
+
 if [ ! -x $MAKE ];then
   echo ""
   echo "make not found"
@@ -21,7 +23,7 @@ fi
 
 
 git clone https://github.com/joyent/node.git $DOWNLOAD_DIR
-cd $DOWNLOAD_DIR;git checkout v0.6.8
+cd_tmp;git checkout v0.6.8
 
 if [ ! -d $DOWNLOAD_DIR ];then
 fi
@@ -29,8 +31,8 @@ fi
 $DOWNLOAD_DIR/configure --openssl-libpath=/usr/lib/ssl
 
 
-cd $DOWNLOAD_DIR;sudo $MAKE 
-cd $DOWNLOAD_DIR;sudo $MAKE install
+cd_tmp;sudo $MAKE 
+cd_tmp;sudo $MAKE install
 RESULT=$?
 
 if [ $RESULT -ne 0 ];then
@@ -41,5 +43,5 @@ fi
 
 echo ""
 echo "Installing npm ..."
-cd $DOWNLOAD_DIR;curl https://npmjs.org/install.sh | sudo sh
+cd_tmp;curl https://npmjs.org/install.sh | sudo sh
 

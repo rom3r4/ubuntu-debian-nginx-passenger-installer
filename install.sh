@@ -101,12 +101,12 @@ if [ "x$PROGRESSBAR" = "x" ];then
 fi
 
 
-SECUREPATH=`grep "rvmsudo_secure_path=1" ~/.profile`
+SECUREPATH=`grep "rvmsudo_secure_path=1" ~/.bashrc`
 
 if [ "x$SECUREPATH" = "x" ];then
   echo ""
   echo "Setting up rvmsudo_secure_path.."
-  echo "export rvmsudo_secure_path=1" >> ~/.profile
+  echo "export rvmsudo_secure_path=1" >> ~/.bashrc
 fi
 
 export rvmsudo_secure_path=1
