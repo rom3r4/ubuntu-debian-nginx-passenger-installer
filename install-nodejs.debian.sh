@@ -3,10 +3,19 @@
 apt-get install python
 
 $MAKE=`which make`
-$DOWNLOAD_DIR=/etc/nodejs
-if [ "x$MAKE" = "x" ];then
+$GIT=`which git`
+
+$DOWNLOAD_DIR=/tmp/nodejs
+
+if [ ! -x $MAKE ];then
   echo ""
   echo "make not found"
+  exit 1
+fi
+
+if [ ! -x $MAKE ];then
+  echo ""
+  echo "git installed? .. exiting"
   exit 1
 fi
 
