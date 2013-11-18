@@ -172,7 +172,7 @@ echo "Once everything is set up, it is time to install Rails..."
 $RVM all do gem install rails --no-ri --no-rdoc
 
 echo ""
-echo "Adding support for Sinatra, Rack and Bundler..."
+echo "Adding support for Sinatra, Rack, Rake and Bundler..."
 
 $RVM all do gem install sinatra rack bundler rake --no-ri --no-rdoc
 
@@ -220,19 +220,19 @@ echo ""
 NGINX_CONF="/etc/nginx/nginx.conf"
 
 
-if [ -f $NGIX_CONF ];then
+if [ -f $NGINX_CONF ];then
 
-  if [ ! -f ${NGIX_CONF}.orig ];then
-    cp $NGINX_CONF ${NGINX_CONF}.orig
+  if [ ! -f "${NGINX_CONF}.orig" ];then
+    cp $NGINX_CONF "${NGINX_CONF}.orig"
   fi
   
   echo ""
   echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
-  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > $NGINX_CONF 
+  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > "${NGINX_CONF}.modifyied"
 else
   echo ""
   echo "Nginx installed?"
-  echo "update your /etc/nginx/nginx.conf file"
+  echo "update your $NGINX_CONF file"
 fi
 
 echo ""
@@ -249,7 +249,7 @@ else
   echo "success."
 fi
 
-
+echo ""
 $SUDO service nginx start 
 
 if [ "x$IS_DEBIAN" = "xyes" ];then

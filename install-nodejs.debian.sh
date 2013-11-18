@@ -3,24 +3,25 @@
 apt-get install python
 
 $MAKE=`which make`
-
+$DOWNLOAD_DIR=/etc/nodejs
 if [ "x$MAKE" = "x" ];then
   echo ""
   echo "make not found"
   exit 1
 fi
 
-cd /tmp
-git clone https://github.com/joyent/node.git /tmp/nodejs
-cd /tmp/nodejs
+
+git clone https://github.com/joyent/node.git $DOWNLOAD_DIR
+cd $DOWNLOAD_DIR;git checkout v0.6.8
+
+if [ ! -d $DOWNLOAD_DIR ];then
+fi
+
+$DOWNLOAD_DIR/configure --openssl-libpath=/usr/lib/ssl
 
 
-git checkout v0.6.8
-
-./configure --openssl-libpath=/usr/lib/ssl
-
-$MAKE 
-sudo $MAKE install
+cd $DOWNLOAD_DIR;sudo $MAKE 
+cd $DOWNLOAD_DIR;sudo $MAKE install
 RESULT=$?
 
 if [ $RESULT -ne 0 ];then
@@ -31,5 +32,5 @@ fi
 
 echo ""
 echo "Installing npm ..."
-curl https://npmjs.org/install.sh | sudo sh
+cd $DOWNLOAD_DIR;curl https://npmjs.org/install.sh | sudo sh
 
