@@ -153,7 +153,7 @@ $RVM all do gem install rails --no-ri --no-rdoc
 
 echo "Adding support for Sinatra, Rack and Bundler..."
 
-$RVM all do gem install sinatra rack bundler --no-ri --no-rdoc
+$RVM all do gem install sinatra rack bundler rake --no-ri --no-rdoc
 
 
 # echo "Once Ruby on Rails is installed, go ahead and install passenger..."
@@ -207,6 +207,16 @@ else
   echo "Nginx installed?"
   echo "update your /etc/nginx/nginx.conf file"
 fi
+
+echo "Trying to configure Passenger ..."
+
+cd `passenger-config --root` &&  $RVMSUDO rake nginx
+RESULT=$?
+
+if [ $RESULT -ne 0 ];then
+  echo "Post install failed ( this may be not important ). Use comand 'passenger-config' to review your configuration"
+fi
+
 
 $SUDO service nginx start 
 
