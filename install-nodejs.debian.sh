@@ -33,6 +33,7 @@ make_install () {
 install_npm () {
   cd $DOWNLOAD_DIR
   curl https://npmjs.org/install.sh | sudo sh
+  return $?
 }
 
 if [ ! -x $MAKE ];then
@@ -57,11 +58,24 @@ RESULT=$?
 
 if [ $RESULT -ne 0 ];then
   echo ""
-  echo "Ooops. Installation failed :-("
+  echo "Ooops. nodejs installation failed :-("
   exit 1
+else
+  echo ""
+  echo "succeded"  
 fi
 
 echo ""
 echo "Installing npm ..."
 install_npm
+RESULT=$?
+
+if [ $RESULT -ne 0 ];then
+  echo ""
+  echo "Ooops. 'npm' installation failed :-("
+  exit 1
+else
+  echo ""
+  echo "succeded."  
+fi
 
