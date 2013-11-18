@@ -242,7 +242,11 @@ cd `passenger-config --root` &&  $RVMSUDO rake nginx
 RESULT=$?
 
 if [ $RESULT -ne 0 ];then
+  echo ""
   echo "Post install failed ( this may be not important ). Use comand 'passenger-config' to review your configuration"
+else
+  echo ""
+  echo "success."
 fi
 
 
