@@ -218,7 +218,8 @@ echo "The last step is to turn start nginx, as it does not do so automatically..
 echo ""
 
 NGINX_CONF="/etc/nginx/nginx.conf"
-
+PASSENGER_RUBY=`passenger-config --ruby-command | grep "passenger_ruby"`
+PASSENGER_RUBY=${PASSENGER_RUBY##* : }
 
 if [ -f $NGINX_CONF ];then
 
@@ -226,10 +227,12 @@ if [ -f $NGINX_CONF ];then
     cp $NGINX_CONF "${NGINX_CONF}.orig"
   fi
   
+  
   echo ""
   echo "Uncommenting passenger_ruby and passenger_root directives at /etc/nginx/nginx.conf"
-  $SUDO sed -e "s/# passenger_root/passenger_root/g" $NGINX_CONF | sed -e "s/# passenger_ruby/passenger_ruby/g" > "${NGINX_CONF}.modifyied"
-  cat "${NGINX_CONF}.modifyied" > $NGINX_CONF
+  $SUDO sed -i "s/# passenger_root/passenger_root/g" $NGINX_CONF 
+  $SUDO sed -i "s/# passenger_ruby.*/$PASSENGER_RUBY/g" $NGINX_CONF
+  $SUDO sed -i "s/passenger_ruby.*/$PASSENGER_RUBY;/g" $NGINX_CONF
 else
 
   echo ""
@@ -254,11 +257,8 @@ fi
 echo ""
 $SUDO service nginx start 
 
-if [ "x$IS_DEBIAN" = "xyes" ];then
-  $CURL -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install-nodejs.debian.sh | bash
-else
-  $CURL -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install-nodejs.ubuntu.sh | bash  
-fi
+
+$CURL -L https://raw.github.com/julianromerajuarez/ubuntu-debian-nginx-passenger-installer/master/install-nodejs.sh | bash
 
 
 echo ""
