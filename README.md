@@ -1,12 +1,12 @@
 ### [ubuntu-debian-nginx-passenger-installer](#)
 
-Debian/Ubuntu Passenger (Ruby production's Server) Installer Script 
+Debian/Ubuntu Passenger Installer Script 
 
 ### Install
 
     # copy-and-paste all in one line
     
-    curl -L https://raw.github.com/julianromerajuarez/ubuntu\
+    curl -L https://raw.github.com/julianromera/ubuntu\
     -debian-nginx-passenger-installer/master/install.sh | bash  
 
 ### Todo
